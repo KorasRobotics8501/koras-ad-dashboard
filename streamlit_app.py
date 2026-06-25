@@ -20,16 +20,18 @@ hr {margin: 1.1rem 0;}
 .k-sec {display:flex; align-items:center; gap:8px; margin:0 0 10px;}
 .k-bar {width:3px; height:15px; background:#2563EB; border-radius:2px; display:inline-block;}
 .k-sec-t {font-size:15px; font-weight:600;}
-.k-hero {background:#2563EB; border-radius:14px; padding:20px 22px; margin-bottom:6px;}
-.k-hero .lbl {font-size:12px; color:#BFD4FF; margin-bottom:7px;}
-.k-hero .num {font-size:28px; font-weight:700; color:#fff; line-height:1.05; letter-spacing:-0.01em;}
+.k-hero {border:0.5px solid rgba(37,99,235,0.25); border-radius:14px; padding:18px 20px;
+         margin-bottom:6px; background:rgba(37,99,235,0.04);}
+.k-cell {background:rgba(128,128,128,0.06); border-radius:10px; padding:14px 16px;}
+.k-hero .lbl {font-size:12px; color:rgba(128,128,128,0.95); margin-bottom:6px;}
+.k-hero .num {font-size:28px; font-weight:700; line-height:1.05; letter-spacing:-0.01em;}
 .k-pill {display:inline-flex; align-items:center; gap:2px; font-size:11px; font-weight:600;
          padding:2px 8px; border-radius:999px; margin-top:9px;}
-.k-up {background:rgba(255,255,255,0.18); color:#DCFCE7;}
-.k-dn {background:rgba(255,255,255,0.18); color:#FFE4E4;}
-.k-strip {margin-top:16px; padding-top:13px; border-top:1px solid rgba(255,255,255,0.18);
-          font-size:12px; color:#DCE8FF; display:flex; gap:20px; flex-wrap:wrap;}
-.k-strip b {color:#fff; font-weight:600;}
+.k-up {background:rgba(22,163,74,0.14); color:#15803D;}
+.k-dn {background:rgba(220,38,38,0.14); color:#DC2626;}
+.k-strip {margin-top:14px; padding-top:12px; border-top:0.5px solid rgba(128,128,128,0.2);
+          font-size:12px; color:rgba(128,128,128,0.95); display:flex; gap:20px; flex-wrap:wrap;}
+.k-strip b {color:#2563EB; font-weight:700;}
 table.k-tbl {width:100%; border-collapse:collapse; font-size:13px; color:inherit;}
 table.k-tbl th {background:rgba(37,99,235,0.07); color:#2563EB; padding:9px 12px; font-weight:600;}
 table.k-tbl td {padding:10px 12px; border-top:0.5px solid rgba(128,128,128,0.18);}
@@ -241,11 +243,11 @@ t_cpc = (cur["cost"] / cur["clicks"]) if cur["clicks"] else 0
 
 hero = f"""
 <div class="k-hero">
-  <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:8px;">
-    <div><div class="lbl">조회·도달</div><div class="num">{cur['views']:,}</div>{pill(cur['views'], prev['views'])}</div>
-    <div><div class="lbl">클릭수</div><div class="num">{cur['clicks']:,}</div>{pill(cur['clicks'], prev['clicks'])}</div>
-    <div><div class="lbl">전환수</div><div class="num">{cur['conversions']:,}</div>{pill(cur['conversions'], prev['conversions'])}</div>
-    <div><div class="lbl">노출수</div><div class="num">{cur['impressions']:,}</div>{pill(cur['impressions'], prev['impressions'])}</div>
+  <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px;">
+    <div class="k-cell"><div class="lbl">조회·도달</div><div class="num">{cur['views']:,}</div>{pill(cur['views'], prev['views'])}</div>
+    <div class="k-cell"><div class="lbl">클릭수</div><div class="num">{cur['clicks']:,}</div>{pill(cur['clicks'], prev['clicks'])}</div>
+    <div class="k-cell"><div class="lbl">전환수</div><div class="num">{cur['conversions']:,}</div>{pill(cur['conversions'], prev['conversions'])}</div>
+    <div class="k-cell"><div class="lbl">노출수</div><div class="num">{cur['impressions']:,}</div>{pill(cur['impressions'], prev['impressions'])}</div>
   </div>
   <div class="k-strip">
     <span>비용 <b>{cur['cost']:,.0f}원</b></span>
