@@ -10,12 +10,12 @@ st.set_page_config(page_title="Koras 광고 대시보드", layout="wide")
 BLUE = "#2563EB"
 st.markdown("""
 <style>
-.block-container {padding-top: 2.0rem; padding-bottom: 2.5rem; max-width: 1200px;}
+.block-container {padding-top: 3.5rem; padding-bottom: 2.5rem; max-width: 1200px;}
 hr {margin: 1.1rem 0;}
 #MainMenu, footer {visibility: hidden;}
 .k-tag {display:inline-flex; align-items:center; gap:6px; font-size:11px; letter-spacing:0.08em;
         font-weight:500; color:#2563EB; background:rgba(37,99,235,0.10);
-        padding:4px 10px; border-radius:999px; margin-bottom:8px;}
+        padding:4px 10px; border-radius:999px; margin:4px 0 8px;}
 .k-h1 {font-size:23px; font-weight:700; line-height:1.2; margin:0;}
 .k-sec {display:flex; align-items:center; gap:8px; margin:0 0 10px;}
 .k-bar {width:3px; height:15px; background:#2563EB; border-radius:2px; display:inline-block;}
