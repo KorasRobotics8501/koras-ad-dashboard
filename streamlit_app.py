@@ -594,11 +594,11 @@ else:
     else:
         chart = (
             alt.Chart(h_period).mark_line(point=True, strokeWidth=2.5, color=BLUE).encode(
-                x=alt.X("date:T", title="날짜"),
+                x=alt.X("date:T", title="날짜", scale=alt.Scale(padding=20)),
                 y=alt.Y("subscribers:Q", title="구독자 수", scale=alt.Scale(zero=False)),
                 tooltip=[alt.Tooltip("date:T", title="날짜"),
                          alt.Tooltip("subscribers:Q", title="구독자", format=",.0f")],
-            ).properties(height=380)
+            ).properties(height=380, padding={"right": 28, "left": 4, "top": 28, "bottom": 4})
         )
         st.altair_chart(chart, width="stretch")
         st.caption("※ 6/25까지는 입력해둔 기록, 6/26부터는 매일 자동으로 쌓여요. (현재 구독자 수는 실시간)")
