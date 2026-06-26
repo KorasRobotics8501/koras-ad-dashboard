@@ -456,8 +456,8 @@ else:
       <div class="k-cell"><div class="lbl">노출수</div><div class="num">{cur['impressions']:,}</div>{pill(cur['impressions'], prev['impressions'])}</div>
       <div class="k-cell"><div class="lbl">클릭수</div><div class="num">{cur['clicks']:,}</div>{pill(cur['clicks'], prev['clicks'])}</div>
       <div class="k-cell"><div class="lbl">전환수</div><div class="num">{int(cur['conversions']):,}</div>{pill(cur['conversions'], prev['conversions'])}</div>
-      <div class="k-cell"><div class="lbl">총비용</div><div class="num">{cur['cost']:,.0f}<span style="font-size:15px;">원</span></div>{pill(cur['cost'], prev['cost'])}</div>
-    </div><div class="k-strip"><span>CTR <b>{t_ctr:.2f}%</b> {pilli(t_ctr, p_ctr)}</span><span>CPC <b>{t_cpc:,.0f}원</b> {pilli(t_cpc, p_cpc)}</span></div></div>
+      <div class="k-cell"><div class="lbl">평균 CPC</div><div class="num">{t_cpc:,.0f}<span style="font-size:15px;">원</span></div>{pill(t_cpc, p_cpc)}</div>
+    </div><div class="k-strip"><span>CTR <b>{t_ctr:.2f}%</b> {pilli(t_ctr, p_ctr)}</span><span>총비용 <b>{cur['cost']:,.0f}원</b> {pilli(cur['cost'], prev['cost'])}</span></div></div>
     """, unsafe_allow_html=True)
     st.markdown("<div style='height:18px;'></div>", unsafe_allow_html=True)
 
