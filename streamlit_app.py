@@ -286,14 +286,14 @@ if isinstance(date_range, (list, tuple)) and len(date_range) == 2:
 else:
     start = end = date_range if not isinstance(date_range, (list, tuple)) else date_range[0]
 
-if st.sidebar.button("🔄 데이터 새로고침"):
-    st.cache_data.clear()
-    st.rerun()
-st.sidebar.caption("전월 대비 = 선택 기간 vs 직전 같은 길이 기간")
-
 period_len = (end - start).days + 1
 prev_end = start - timedelta(days=1)
 prev_start = prev_end - timedelta(days=period_len - 1)
+
+if st.sidebar.button("🔄 데이터 새로고침"):
+    st.cache_data.clear()
+    st.rerun()
+st.sidebar.caption(f"증감 = 선택 기간 vs 직전 {period_len}일 대비")
 
 
 def pill(cur_v, prev_v):
@@ -303,6 +303,16 @@ def pill(cur_v, prev_v):
     if pct >= 0:
         return f'<span class="k-pill k-up">▲ {pct:.1f}%</span>'
     return f'<span class="k-pill k-dn">▼ {abs(pct):.1f}%</span>'
+
+
+def pilli(cur_v, prev_v):
+    """히어로 하단 줄용 인라인 증감 뱃지 (위 칸이랑 같은 초록▲/빨강▼)."""
+    if not prev_v:
+        return '<span class="k-pill k-up" style="margin-top:0;">신규</span>'
+    pct = (cur_v - prev_v) / prev_v * 100
+    if pct >= 0:
+        return f'<span class="k-pill k-up" style="margin-top:0;">▲ {pct:.1f}%</span>'
+    return f'<span class="k-pill k-dn" style="margin-top:0;">▼ {abs(pct):.1f}%</span>'
 
 
 def period_txt():
@@ -327,18 +337,20 @@ if page.startswith("📊"):
     <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin-bottom:16px;">
       <div><div class="k-tag">KORAS ROBOTICS · 광고 리포트</div><div class="k-h1">SNS · DA 통합 성과</div></div>
       <div style="text-align:right; font-size:12px; color:rgba(128,128,128,0.95); line-height:1.6;">
-        <div>{period_txt()}</div><div style="opacity:0.7;">전월 대비 · 구글 + 메타</div></div>
+        <div>{period_txt()}</div><div style="opacity:0.7;">직전 {period_len}일 대비 · 구글 + 메타</div></div>
     </div>""", unsafe_allow_html=True)
 
     t_ctr = (cur["clicks"] / cur["impressions"] * 100) if cur["impressions"] else 0
     t_cpc = (cur["cost"] / cur["clicks"]) if cur["clicks"] else 0
+    p_ctr = (prev["clicks"] / prev["impressions"] * 100) if prev["impressions"] else 0
+    p_cpc = (prev["cost"] / prev["clicks"]) if prev["clicks"] else 0
     st.markdown(f"""
     <div class="k-hero"><div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px;">
       <div class="k-cell"><div class="lbl">조회·도달</div><div class="num">{cur['views']:,}</div>{pill(cur['views'], prev['views'])}</div>
       <div class="k-cell"><div class="lbl">클릭수</div><div class="num">{cur['clicks']:,}</div>{pill(cur['clicks'], prev['clicks'])}</div>
       <div class="k-cell"><div class="lbl">전환수</div><div class="num">{cur['conversions']:,}</div>{pill(cur['conversions'], prev['conversions'])}</div>
       <div class="k-cell"><div class="lbl">노출수</div><div class="num">{cur['impressions']:,}</div>{pill(cur['impressions'], prev['impressions'])}</div>
-    </div><div class="k-strip"><span>비용 <b>{cur['cost']:,.0f}원</b></span><span>CTR <b>{t_ctr:.2f}%</b></span><span>CPC <b>{t_cpc:,.0f}원</b></span></div></div>
+    </div><div class="k-strip"><span>비용 <b>{cur['cost']:,.0f}원</b> {pilli(cur['cost'], prev['cost'])}</span><span>CTR <b>{t_ctr:.2f}%</b> {pilli(t_ctr, p_ctr)}</span><span>CPC <b>{t_cpc:,.0f}원</b> {pilli(t_cpc, p_cpc)}</span></div></div>
     """, unsafe_allow_html=True)
     st.markdown('<div style="font-size:11px; color:rgba(128,128,128,0.8); margin:6px 0 18px;">※ \'조회·도달\'은 구글 조회수 + 메타 도달의 합이에요(성격이 다른 값이라 참고용).</div>', unsafe_allow_html=True)
 
@@ -419,7 +431,7 @@ else:
     <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin-bottom:16px;">
       <div><div class="k-tag">KORAS ROBOTICS · 검색광고</div><div class="k-h1">검색광고(SA) 성과 · 네이버</div></div>
       <div style="text-align:right; font-size:12px; color:rgba(128,128,128,0.95); line-height:1.6;">
-        <div>{period_txt()}</div><div style="opacity:0.7;">전월 대비 · 파워링크</div></div>
+        <div>{period_txt()}</div><div style="opacity:0.7;">직전 {period_len}일 대비 · 파워링크</div></div>
     </div>""", unsafe_allow_html=True)
 
     if not _naver_ready():
@@ -437,13 +449,15 @@ else:
 
     t_ctr = (cur["clicks"] / cur["impressions"] * 100) if cur["impressions"] else 0
     t_cpc = (cur["cost"] / cur["clicks"]) if cur["clicks"] else 0
+    p_ctr = (prev["clicks"] / prev["impressions"] * 100) if prev["impressions"] else 0
+    p_cpc = (prev["cost"] / prev["clicks"]) if prev["clicks"] else 0
     st.markdown(f"""
     <div class="k-hero"><div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px;">
       <div class="k-cell"><div class="lbl">노출수</div><div class="num">{cur['impressions']:,}</div>{pill(cur['impressions'], prev['impressions'])}</div>
       <div class="k-cell"><div class="lbl">클릭수</div><div class="num">{cur['clicks']:,}</div>{pill(cur['clicks'], prev['clicks'])}</div>
       <div class="k-cell"><div class="lbl">전환수</div><div class="num">{int(cur['conversions']):,}</div>{pill(cur['conversions'], prev['conversions'])}</div>
       <div class="k-cell"><div class="lbl">총비용</div><div class="num">{cur['cost']:,.0f}<span style="font-size:15px;">원</span></div>{pill(cur['cost'], prev['cost'])}</div>
-    </div><div class="k-strip"><span>CTR <b>{t_ctr:.2f}%</b></span><span>CPC <b>{t_cpc:,.0f}원</b></span></div></div>
+    </div><div class="k-strip"><span>CTR <b>{t_ctr:.2f}%</b> {pilli(t_ctr, p_ctr)}</span><span>CPC <b>{t_cpc:,.0f}원</b> {pilli(t_cpc, p_cpc)}</span></div></div>
     """, unsafe_allow_html=True)
     st.markdown("<div style='height:18px;'></div>", unsafe_allow_html=True)
 
